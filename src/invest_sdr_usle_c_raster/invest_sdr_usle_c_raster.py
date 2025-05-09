@@ -40,6 +40,16 @@ MODEL_SPEC = {
                          "lulc_path", "drainage_path", "watersheds_path", ],
         "different_projections_ok": False,
     },
+    "ui_spec": {
+        "order": [
+            ['workspace_dir', 'results_suffix'],
+            ['dem_path', 'erosivity_path', 'erodibility_path'],
+            ['lulc_path', 'usle_c_path', 'biophysical_table_path'],
+            ['watersheds_path', 'drainage_path'],
+            ['flow_dir_algorithm', 'threshold_flow_accumulation', 'k_param', 'sdr_max', 'ic_0_param', 'l_max']
+        ],
+        "hidden": ["n_workers"]
+    },
     "args": {
         "workspace_dir": spec_utils.WORKSPACE,
         "results_suffix": spec_utils.SUFFIX,
