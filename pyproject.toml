@@ -14,7 +14,7 @@ description = "Sediment Delivery Ratio (SDR) with USLE C raster (an InVEST plugi
 
 [tool.natcap.invest]
 api_version = "0.0.1"
-model_id = "invest-sdr-usle-c-raster"  # model identifier used internally
+model_id = "invest_sdr_usle_c_raster"  # model identifier used internally
 model_title = "Sediment Delivery Ratio with USLE C Raster Input"  # user-facing name
 pyname = "invest-sdr-usle-c-raster"
 conda_dependencies = [ # to install into the plugin's conda env (not available thru pip)
