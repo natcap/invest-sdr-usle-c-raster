@@ -26,19 +26,29 @@ from natcap.invest import urban_nature_access
 from natcap.invest import utils
 from natcap.invest import validation
 from natcap.invest.unit_registry import u
-from . import sdr_core
+from natcap.invest.sdr import sdr_core
 
 LOGGER = logging.getLogger(__name__)
 
 MODEL_SPEC = {
-    "model_id": "invest-sdr-usle-c-raster",
+    "model_id": "invest_sdr_usle_c_raster",
     "model_name": "SDR with USLE C raster",
-    "pyname": "invest-sdr-usle-c-raster",
     "userguide": "",
+    "aliases": set(),
     "args_with_spatial_overlap": {
         "spatial_keys": ["dem_path", "erosivity_path", "erodibility_path",
                          "lulc_path", "drainage_path", "watersheds_path", ],
         "different_projections_ok": False,
+    },
+    "ui_spec": {
+        "order": [
+            ['workspace_dir', 'results_suffix'],
+            ['dem_path', 'erosivity_path', 'erodibility_path'],
+            ['lulc_path', 'usle_c_path', 'biophysical_table_path'],
+            ['watersheds_path', 'drainage_path'],
+            ['flow_dir_algorithm', 'threshold_flow_accumulation', 'k_param', 'sdr_max', 'ic_0_param', 'l_max']
+        ],
+        "hidden": ["n_workers"]
     },
     "args": {
         "workspace_dir": spec_utils.WORKSPACE,
