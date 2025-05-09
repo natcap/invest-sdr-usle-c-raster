@@ -31,10 +31,10 @@ from natcap.invest.sdr import sdr_core
 LOGGER = logging.getLogger(__name__)
 
 MODEL_SPEC = {
-    "model_id": "invest-sdr-usle-c-raster",
+    "model_id": "invest_sdr_usle_c_raster",
     "model_name": "SDR with USLE C raster",
-    "pyname": "invest-sdr-usle-c-raster",
     "userguide": "",
+    "aliases": set(),
     "args_with_spatial_overlap": {
         "spatial_keys": ["dem_path", "erosivity_path", "erodibility_path",
                          "lulc_path", "drainage_path", "watersheds_path", ],
