@@ -2,19 +2,12 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-py-modules = ["invest-sdr-usle-c-raster"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [project]
-name = "invest-sdr-usle-c-raster"
+name = "invest_sdr_usle_c_raster"
 version = "0.0.1"
 dependencies = [
     "taskgraph @ git+https://github.com/natcap/taskgraph.git@main",
-    "pygeoprocessing",
-    "natcap.invest @ git+https://github.com/natcap/invest.git@feature/plugins"
+    "pygeoprocessing"
 ]
 requires-python = ">=3.9"
 description = "Sediment Delivery Ratio (SDR) with USLE C raster (an InVEST plugin)"

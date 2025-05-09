@@ -26,7 +26,7 @@ from natcap.invest import urban_nature_access
 from natcap.invest import utils
 from natcap.invest import validation
 from natcap.invest.unit_registry import u
-from . import sdr_core
+from natcap.invest.sdr import sdr_core
 
 LOGGER = logging.getLogger(__name__)
 
