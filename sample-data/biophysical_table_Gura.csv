@@ -1,0 +1,11 @@
+description,lucode,usle_p
+Urban and paved roads,1,1
+Grass,3,1
+General agriculture,5,1
+Tea,6,1
+Coffee,7,1
+Forest,8,1
+Water,9,1
+Forest plantation,11,1
+Unpaved road,18,1
+Agroforestry,19,0.6
