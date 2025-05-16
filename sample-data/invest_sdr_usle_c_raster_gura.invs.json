@@ -1,0 +1,21 @@
+{
+    "args": {
+        "biophysical_table_path": "biophysical_table_Gura.csv",
+        "dem_path": "DEM_gura.tif",
+        "drainage_path": "",
+        "erodibility_path": "erodibility_gura.tif",
+        "erosivity_path": "erosivity_gura.tif",
+        "flow_dir_algorithm": "MFD",
+        "ic_0_param": "0.5",
+        "k_param": "2",
+        "l_max": "122",
+        "lulc_path": "land_use_gura.tif",
+        "results_suffix": "gura",
+        "sdr_max": "0.8",
+        "threshold_flow_accumulation": "1000",
+        "usle_c_path": "c_gura.tif",
+        "watersheds_path": "watershed_gura.shp"
+    },
+    "invest_version": "3.16.0",
+    "model_id": "invest_sdr_usle_c_raster"
+}
