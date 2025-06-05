@@ -21,7 +21,7 @@ from osgeo import gdal
 from osgeo import ogr
 
 from natcap.invest import gettext
-from natcap.invest import spec_utils
+from natcap.invest import utils
 from natcap.invest import urban_nature_access
 from natcap.invest import utils
 from natcap.invest import validation
@@ -51,11 +51,11 @@ MODEL_SPEC = {
         "hidden": ["n_workers"]
     },
     "args": {
-        "workspace_dir": spec_utils.WORKSPACE,
-        "results_suffix": spec_utils.SUFFIX,
-        "n_workers": spec_utils.N_WORKERS,
+        "workspace_dir": utils.WORKSPACE,
+        "results_suffix": utils.SUFFIX,
+        "n_workers": utils.N_WORKERS,
         "dem_path": {
-            **spec_utils.DEM,
+            **utils.DEM,
             "projected": True
         },
         "erosivity_path": {
@@ -82,9 +82,9 @@ MODEL_SPEC = {
             "name": gettext("soil erodibility")
         },
         "lulc_path": {
-            **spec_utils.LULC,
+            **utils.LULC,
             "projected": True,
-            "about": spec_utils.LULC['about'] + " " + gettext(
+            "about": utils.LULC['about'] + " " + gettext(
                 "All values in this raster must "
                 "have corresponding entries in the Biophysical Table.")
         },
@@ -99,7 +99,7 @@ MODEL_SPEC = {
         },
         "watersheds_path": {
             "type": "vector",
-            "geometries": spec_utils.POLYGONS,
+            "geometries": utils.POLYGONS,
             "projected": True,
             "fields": {},
             "about": gettext(
@@ -112,7 +112,7 @@ MODEL_SPEC = {
             "type": "csv",
             "index_col": "lucode",
             "columns": {
-                "lucode": spec_utils.LULC_TABLE_COLUMN,
+                "lucode": utils.LULC_TABLE_COLUMN,
                 "usle_p": {
                     "type": "ratio",
                     "about": gettext("Support practice factor for the USLE")}
@@ -123,7 +123,7 @@ MODEL_SPEC = {
                 "corresponding entries in this table."),
             "name": gettext("biophysical table")
         },
-        "threshold_flow_accumulation": spec_utils.THRESHOLD_FLOW_ACCUMULATION,
+        "threshold_flow_accumulation": utils.THRESHOLD_FLOW_ACCUMULATION,
         "k_param": {
             "type": "number",
             "units": u.none,
@@ -160,7 +160,7 @@ MODEL_SPEC = {
                 "streams. Pixels with 0 are not drainages."),
             "name": gettext("drainages")
         },
-        **spec_utils.FLOW_DIR_ALGORITHM
+        **utils.FLOW_DIR_ALGORITHM
     },
     "outputs": {
         "avoided_erosion.tif": {
@@ -198,7 +198,7 @@ MODEL_SPEC = {
                 "units": u.metric_ton/u.hectare
             }}
         },
-        "stream.tif": spec_utils.STREAM,
+        "stream.tif": utils.STREAM,
         "stream_and_drainage.tif": {
             "created_if": "drainage_path",
             "about": "This raster is the union of that layer with the calculated stream layer(Eq. (85)). Values of 1 represent streams, values of 0 are non-stream pixels.",
@@ -213,7 +213,7 @@ MODEL_SPEC = {
         },
         "watershed_results_sdr.shp": {
             "about": "Table containing biophysical values for each watershed",
-            "geometries": spec_utils.POLYGONS,
+            "geometries": utils.POLYGONS,
             "fields": {
                 "sed_export": {
                     "type": "number",
@@ -279,8 +279,8 @@ MODEL_SPEC = {
                         "units": u.metric_ton/(u.hectare*u.year)
                     }}
                 },
-                "flow_accumulation.tif": spec_utils.FLOW_ACCUMULATION,
-                "flow_direction.tif": spec_utils.FLOW_DIRECTION,
+                "flow_accumulation.tif": utils.FLOW_ACCUMULATION,
+                "flow_direction.tif": utils.FLOW_DIRECTION,
                 "ic.tif": {
                     "about": gettext("Index of connectivity (Eq. (70))"),
                     "bands": {1: {
@@ -301,7 +301,7 @@ MODEL_SPEC = {
                         "from the biophysical table to the LULC raster."),
                     "bands": {1: {"type": "ratio"}}
                 },
-                "pit_filled_dem.tif": spec_utils.FILLED_DEM,
+                "pit_filled_dem.tif": utils.FILLED_DEM,
                 "s_accumulation.tif": {
                     "about": gettext(
                         "Flow accumulation weighted by the thresholded slope. "
@@ -324,7 +324,7 @@ MODEL_SPEC = {
                     "about": gettext("Sediment delivery ratio (Eq. (75))"),
                     "bands": {1: {"type": "ratio"}}
                 },
-                "slope.tif": spec_utils.SLOPE,
+                "slope.tif": utils.SLOPE,
                 "slope_threshold.tif": {
                     "about": gettext(
                         "Percent slope, thresholded to be no less than 0.005 "
@@ -468,7 +468,7 @@ MODEL_SPEC = {
                 }
             },
         },
-        "taskgraph_cache": spec_utils.TASKGRAPH_DIR
+        "taskgraph_cache": utils.TASKGRAPH_DIR
     }
 }
 
