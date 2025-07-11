@@ -85,7 +85,7 @@ MODEL_SPEC = spec.ModelSpec(
             projected=True
         ),
         spec.SingleBandRasterInput(
-            id="usle_c",
+            id="usle_c_path",
             name=gettext("USLE C"),
             about=gettext("Cover-management factor for the USLE"),
             data_type=float,
