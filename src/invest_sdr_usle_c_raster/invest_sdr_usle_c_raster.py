@@ -638,9 +638,9 @@ def execute(args):
 
     """
     file_suffix = utils.make_suffix_string(args, 'results_suffix')
-    biophysical_df = validation.get_validated_dataframe(
-        args['biophysical_table_path'],
-        **MODEL_SPEC['args']['biophysical_table_path'])
+    biophysical_df = MODEL_SPEC.get_input(
+        'biophysical_table_path').get_validated_dataframe(
+        args['biophysical_table_path'])
 
     # Test to see if C values are outside of 0..1
     def update_out_of_range(any_out_of_range, block):
@@ -1683,5 +1683,4 @@ def validate(args, limit_to=None):
             be an empty list if validation succeeds.
 
     """
-    return validation.validate(
-        args, MODEL_SPEC['args'], MODEL_SPEC['args_with_spatial_overlap'])
+    return validation.validate(args, MODEL_SPEC)
