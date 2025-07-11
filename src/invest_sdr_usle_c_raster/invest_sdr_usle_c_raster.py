@@ -31,12 +31,12 @@ from natcap.invest.sdr import sdr_core
 LOGGER = logging.getLogger(__name__)
 
 MODEL_SPEC = spec.ModelSpec(
-    model_id: "invest_sdr_usle_c_raster",
-    model_title: "SDR with USLE C raster",
-    userguide: "https://github.com/natcap/invest-sdr-usle-c-raster/blob/main/README.md",
+    model_id="invest_sdr_usle_c_raster",
+    model_title="SDR with USLE C raster",
+    userguide="https://github.com/natcap/invest-sdr-usle-c-raster/blob/main/README.md",
     validate_spatial_overlap=True,
     different_projections_ok=False,
-    aliases: (),
+    aliases=(),
     input_field_order=[
         ["workspace_dir", "results_suffix"],
         ["dem_path", "erosivity_path", "erodibility_path"],
