@@ -338,6 +338,14 @@ MODEL_SPEC = spec.ModelSpec(
                     data_type=float,
                     units=u.none
                 ),
+                spec.SingleBandRasterOutput(
+                    id="p.tif",
+                    about=gettext(
+                        "Support practice factor derived by mapping usle_p "
+                        "from the biophysical table to the LULC raster."),
+                    data_type=ratio,
+                    units=None
+                ),
                 spec.FILLED_DEM.model_copy(update=dict(id="pit_filled_dem.tif")),
                 spec.SingleBandRasterOutput(
                     id="s_accumulation.tif",
@@ -388,15 +396,6 @@ MODEL_SPEC = spec.ModelSpec(
                     about=gettext(
                         "Mean thresholded cover-management factor for upslope"
                         " contributing area (in eq. (73))"
-                    ),
-                    data_type=float,
-                    units=None
-                ),
-                spec.SingleBandRasterOutput(
-                    id="w.tif",
-                    about=gettext(
-                        "Cover-management factor derived by mapping usle_c from the"
-                        " biophysical table to the LULC raster."
                     ),
                     data_type=float,
                     units=None
