@@ -343,7 +343,7 @@ MODEL_SPEC = spec.ModelSpec(
                     about=gettext(
                         "Support practice factor derived by mapping usle_p "
                         "from the biophysical table to the LULC raster."),
-                    data_type=ratio,
+                    data_type=float,
                     units=None
                 ),
                 spec.FILLED_DEM.model_copy(update=dict(id="pit_filled_dem.tif")),
