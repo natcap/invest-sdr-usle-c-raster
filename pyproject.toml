@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "invest_sdr_usle_c_raster"
 version = "0.0.1"
 dependencies = [
-    "natcap.invest>=3.16.0",
+    "natcap.invest>=3.16.1",
     "pygeoprocessing",
     "taskgraph"
 ]
