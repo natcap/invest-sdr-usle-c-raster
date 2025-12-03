@@ -286,7 +286,7 @@ MODEL_SPEC = spec.ModelSpec(
             ]
         ),
         spec.SingleBandRasterOutput(
-            id="cp_path",
+            id="cp_factor_path",
             path="intermediate_outputs/cp.tif",
             about=gettext(
                 "CP factor derived by mapping usle_c and usle_p from the"
@@ -350,7 +350,7 @@ MODEL_SPEC = spec.ModelSpec(
             units=u.none
         ),
         spec.SingleBandRasterOutput(
-            id="p_path",
+            id="p_factor_path",
             path="intermediate_outputs/p.tif",
             about=gettext(
                 "Support practice factor derived by mapping usle_p "
@@ -380,7 +380,7 @@ MODEL_SPEC = spec.ModelSpec(
             units=u.none
         ),
         spec.SingleBandRasterOutput(
-            id="sdr_factor_path",
+            id="sdr_path",
             path="intermediate_outputs/sdr_factor.tif",
             about=gettext("Sediment delivery ratio (Eq. (75))"),
             data_type=float,
@@ -388,7 +388,7 @@ MODEL_SPEC = spec.ModelSpec(
         ),
         spec.SLOPE,
         spec.SingleBandRasterOutput(
-            id="slope_threshold_path",
+            id="thresholded_slope_path",
             path="intermediate_outputs/slope_threshold.tif",
             about=gettext(
                 "Percent slope, thresholded to be no less than 0.005 and no"
@@ -419,7 +419,7 @@ MODEL_SPEC = spec.ModelSpec(
             units=None
         ),
         spec.SingleBandRasterOutput(
-            id="w_threshold_path",
+            id="thresholded_w_path",
             path="intermediate_outputs/w_threshold.tif",
             about=gettext(
                 "Cover-management factor thresholded to be no less than 0.001"
@@ -429,7 +429,7 @@ MODEL_SPEC = spec.ModelSpec(
             units=None
         ),
         spec.SingleBandRasterOutput(
-            id="what_drains_to_stream_path",
+            id="drainage_mask",
             path="intermediate_outputs/what_drains_to_stream.tif",
             about=gettext(
                 "Map of which pixels drain to a stream. A value of 1 means that"
@@ -583,51 +583,6 @@ MODEL_SPEC = spec.ModelSpec(
             data_type=float,
             units=None
         ),
-        spec.SingleBandRasterOutput(
-            id="thresholded_slope_path",
-            path="intermediate_outputs/thresholded_slope.tif",
-            about=gettext(
-                "Thresholded slope raster"
-            ),
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
-            id="thresholded_w_path",
-            path="intermediate_outputs/thresholded_w.tif",
-            about=gettext(
-                "Thresholded w raster"
-            ),
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
-            id="p_factor_path",
-            path="intermediate_outputs/p_factor.tif",
-            about=gettext(
-                "raster of LULC mapped to P values"
-            ),
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
-            id="cp_factor_path",
-            path="intermediate_outputs/cp_factor.tif",
-            about=gettext(
-                "raster of LULC mapped to CP values"
-            ),
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
-            id="drainage_mask",
-            path="drainage_mask.tif",
-            about=gettext(
-                "drainage_mask"
-            ),
-            data_type=float,
-            units=None
-        ),
         spec.TASKGRAPH_CACHE
     ]
 )
@@ -741,7 +696,6 @@ def execute(args):
     vector_mask_options = {
         'mask_vector_path': args['watersheds_path'],
     }
-    LOGGER.info(f'base_path list: {base_list}')
     align_task = task_graph.add_task(
         func=pygeoprocessing.align_and_resize_raster_stack,
         args=(
@@ -1017,8 +971,8 @@ def execute(args):
         args=(
             float(args['k_param']), float(args['ic_0_param']),
             float(args['sdr_max']), f_reg['ic_path'],
-            drainage_raster_path_task[0], f_reg['sdr_factor_path']),
-        target_path_list=[f_reg['sdr_factor_path']],
+            drainage_raster_path_task[0], f_reg['sdr_path']),
+        target_path_list=[f_reg['sdr_path']],
         dependent_task_list=[ic_task],
         task_name='calculate sdr')
 
@@ -1026,7 +980,7 @@ def execute(args):
         func=pygeoprocessing.raster_map,
         kwargs=dict(
             op=numpy.multiply,  # export = USLE * SDR
-            rasters=[f_reg['usle_path'], f_reg['sdr_factor_path']],
+            rasters=[f_reg['usle_path'], f_reg['sdr_path']],
             target_path=f_reg['sed_export_path']),
         target_path_list=[f_reg['sed_export_path']],
         dependent_task_list=[usle_task, sdr_task],
@@ -1035,7 +989,7 @@ def execute(args):
     e_prime_task = task_graph.add_task(
         func=_calculate_e_prime,
         args=(
-            f_reg['usle_path'], f_reg['sdr_factor_path'],
+            f_reg['usle_path'], f_reg['sdr_path'],
             drainage_raster_path_task[0], f_reg['e_prime_path']),
         target_path_list=[f_reg['e_prime_path']],
         dependent_task_list=[usle_task, sdr_task],
@@ -1047,7 +1001,7 @@ def execute(args):
             flow_direction_path=f_reg['flow_direction_path'],
             e_prime_path=f_reg['e_prime_path'],
             f_path=f_reg['f_path'],
-            sdr_path=f_reg['sdr_factor_path'],
+            sdr_path=f_reg['sdr_path'],
             target_sediment_deposition_path=f_reg['sed_deposition_path'],
             algorithm=args['flow_dir_algorithm']),
         dependent_task_list=[e_prime_task, sdr_task, flow_dir_task],
@@ -1069,7 +1023,7 @@ def execute(args):
         kwargs=dict(
             op=_avoided_export_op,
             rasters=[f_reg['avoided_erosion_path'],
-                     f_reg['sdr_factor_path'],
+                     f_reg['sdr_path'],
                      f_reg['sed_deposition_path']],
             target_path=f_reg['avoided_export_path']),
         dependent_task_list=[avoided_erosion_task, sdr_task,
