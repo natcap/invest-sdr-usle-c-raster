@@ -482,7 +482,7 @@ MODEL_SPEC = spec.ModelSpec(
         ),
         spec.SingleBandRasterOutput(
             id="aligned_erosivity_path",
-            path="intermediate_outputs/aligned_erosivity",
+            path="intermediate_outputs/aligned_erosivity.tif",
             about=gettext(
                 "Copy of the input erosivity map, clipped to the extent of the"
                 " other raster inputs and aligned to the DEM."
@@ -620,15 +620,6 @@ MODEL_SPEC = spec.ModelSpec(
             units=None
         ),
         spec.SingleBandRasterOutput(
-            id="sdr_path",
-            path="sdr.tif",
-            about=gettext(
-                "SDR"
-            ),
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
             id="drainage_mask",
             path="drainage_mask.tif",
             about=gettext(
@@ -640,9 +631,6 @@ MODEL_SPEC = spec.ModelSpec(
         spec.TASKGRAPH_CACHE
     ]
 )
-
-
-INTERMEDIATE_DIR_NAME = 'intermediate_outputs'
 
 
 # Target nodata is for general rasters that are positive, and _IC_NODATA are
@@ -741,8 +729,8 @@ def execute(args):
         drainage_present = True
         input_raster_key_list.append('drainage')
         base_list.append(args['drainage_path'])
-        aligned_list.append(f_reg['aligned_drainage'])
-        masked_list.append(f_reg['masked_drainage'])
+        aligned_list.append(f_reg['aligned_drainage_path'])
+        masked_list.append(f_reg['masked_drainage_path'])
         interpolation_list.append('near')
 
     dem_raster_info = pygeoprocessing.get_raster_info(args['dem_path'])
@@ -1029,8 +1017,8 @@ def execute(args):
         args=(
             float(args['k_param']), float(args['ic_0_param']),
             float(args['sdr_max']), f_reg['ic_path'],
-            drainage_raster_path_task[0], f_reg['sdr_path']),
-        target_path_list=[f_reg['sdr_path']],
+            drainage_raster_path_task[0], f_reg['sdr_factor_path']),
+        target_path_list=[f_reg['sdr_factor_path']],
         dependent_task_list=[ic_task],
         task_name='calculate sdr')
 
@@ -1038,7 +1026,7 @@ def execute(args):
         func=pygeoprocessing.raster_map,
         kwargs=dict(
             op=numpy.multiply,  # export = USLE * SDR
-            rasters=[f_reg['usle_path'], f_reg['sdr_path']],
+            rasters=[f_reg['usle_path'], f_reg['sdr_factor_path']],
             target_path=f_reg['sed_export_path']),
         target_path_list=[f_reg['sed_export_path']],
         dependent_task_list=[usle_task, sdr_task],
@@ -1047,7 +1035,7 @@ def execute(args):
     e_prime_task = task_graph.add_task(
         func=_calculate_e_prime,
         args=(
-            f_reg['usle_path'], f_reg['sdr_path'],
+            f_reg['usle_path'], f_reg['sdr_factor_path'],
             drainage_raster_path_task[0], f_reg['e_prime_path']),
         target_path_list=[f_reg['e_prime_path']],
         dependent_task_list=[usle_task, sdr_task],
@@ -1059,7 +1047,7 @@ def execute(args):
             flow_direction_path=f_reg['flow_direction_path'],
             e_prime_path=f_reg['e_prime_path'],
             f_path=f_reg['f_path'],
-            sdr_path=f_reg['sdr_path'],
+            sdr_path=f_reg['sdr_factor_path'],
             target_sediment_deposition_path=f_reg['sed_deposition_path'],
             algorithm=args['flow_dir_algorithm']),
         dependent_task_list=[e_prime_task, sdr_task, flow_dir_task],
@@ -1081,7 +1069,7 @@ def execute(args):
         kwargs=dict(
             op=_avoided_export_op,
             rasters=[f_reg['avoided_erosion_path'],
-                     f_reg['sdr_path'],
+                     f_reg['sdr_factor_path'],
                      f_reg['sed_deposition_path']],
             target_path=f_reg['avoided_export_path']),
         dependent_task_list=[avoided_erosion_task, sdr_task,
