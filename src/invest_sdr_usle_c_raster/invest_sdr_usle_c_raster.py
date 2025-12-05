@@ -764,7 +764,7 @@ def execute(args):
         dependent_task_list=[slope_task],
         task_name='threshold slope')
 
-    if args['flow_dir_algorithm'] == 'MFD':
+    if args['flow_dir_algorithm'] == 'mfd':
         flow_dir_task = task_graph.add_task(
             func=pygeoprocessing.routing.flow_dir_mfd,
             args=(
