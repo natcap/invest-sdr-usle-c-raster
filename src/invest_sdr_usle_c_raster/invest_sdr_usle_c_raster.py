@@ -1464,7 +1464,7 @@ def _calculate_bar_factor(
         out_bar_path (string): path to output raster that is the result of
             the factor accumulation raster divided by the flow accumulation
             raster.
-        flow_dir_algorithm (string): flow direction algorithm, 'D8' or 'MFD'
+        flow_dir_algorithm (string): flow direction algorithm, 'd8' or 'mfd'
 
     Returns:
         None.
@@ -1472,7 +1472,7 @@ def _calculate_bar_factor(
     """
     LOGGER.debug(f"doing flow accumulation on {factor_path}")
 
-    if flow_dir_algorithm == 'D8':
+    if flow_dir_algorithm == 'd8':
         flow_accum_func = pygeoprocessing.routing.flow_accumulation_d8
     else:  # MFD
         flow_accum_func = pygeoprocessing.routing.flow_accumulation_mfd
