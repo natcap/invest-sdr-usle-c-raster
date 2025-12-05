@@ -17,6 +17,7 @@ description = "Sediment Delivery Ratio (SDR) with USLE C raster (an InVEST plugi
 api_version = "v1"
 package_name = "invest_sdr_usle_c_raster"
 conda_dependencies = [
-  "gdal<3.11",
+  "python==3.13",
+  "gdal!=3.11",
   "geotiff>=1.7.3"  # earlier versions don't support space in CONDA_PREFIX
 ]
