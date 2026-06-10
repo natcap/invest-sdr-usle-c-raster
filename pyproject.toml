@@ -4,14 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "invest_sdr_usle_c_raster"
-version = "0.0.1"
+version = "1.0.0"
+description = "InVEST Sediment Delivery Ratio (SDR) variant that expects USLE C values in a raster instead of in the biophysical table."
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+maintainers = [
+    {name = "Natural Capital Alliance Software Team"}
+]
+readme = "README.md"
 dependencies = [
     "natcap.invest>=3.16.1",
     "pygeoprocessing",
     "taskgraph"
 ]
 requires-python = ">=3.9"
-description = "Sediment Delivery Ratio (SDR) with USLE C raster (an InVEST plugin)"
+
+[project.urls]
+Repository = "https://github.com/natcap/invest-sdr-usle-c-raster"
+Issues = "https://github.com/natcap/invest-sdr-usle-c-raster/issues"
+Documentation = "https://github.com/natcap/invest-sdr-usle-c-raster/blob/main/README.md"
 
 [tool.natcap.invest]
 api_version = "v1"
@@ -20,3 +31,4 @@ conda_dependencies = [
   "gdal<3.11",
   "geotiff>=1.7.3"  # earlier versions don't support space in CONDA_PREFIX
 ]
+registry_description = "invest_registry_description.md"
