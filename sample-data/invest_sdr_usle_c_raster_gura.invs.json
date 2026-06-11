@@ -16,6 +16,5 @@
         "usle_c_path": "c_gura.tif",
         "watersheds_path": "watershed_gura.shp"
     },
-    "invest_version": "3.16.0",
-    "model_id": "invest_sdr_usle_c_raster"
+    "model_id": "invest_sdr_usle_c_raster@0_0_1"
 }

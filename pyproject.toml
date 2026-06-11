@@ -13,11 +13,10 @@ maintainers = [
 ]
 readme = "README.md"
 dependencies = [
-    "natcap.invest>=3.16.1",
+    "natcap.invest>=3.18.0",
     "pygeoprocessing",
     "taskgraph"
 ]
-requires-python = ">=3.9"
 
 [project.urls]
 Repository = "https://github.com/natcap/invest-sdr-usle-c-raster"
@@ -28,7 +27,10 @@ Documentation = "https://github.com/natcap/invest-sdr-usle-c-raster/blob/main/RE
 api_version = "v1"
 package_name = "invest_sdr_usle_c_raster"
 conda_dependencies = [
-  "gdal<3.11",
-  "geotiff>=1.7.3"  # earlier versions don't support space in CONDA_PREFIX
+  "gdal",
+  "geotiff>=1.7.3",  # earlier versions don't support space in CONDA_PREFIX
+  "natcap.invest>=3.18.0",
+  "pygeoprocessing",
+  "python",
 ]
 registry_description = "invest_registry_description.md"
